@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>todoList</title>
+</head>
+<style>
+    [v-cloak]{
+        display:none;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <input type="text" v-model="title"><button @click="addTitle">添加</button>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr style="color:#fff;font-size:16px;">
+            <td height="40" align="center" bgcolor="#3399ff"><label><input type="checkbox" @click="allSelect" :checked="isSelect">全选</label></td>
+            <td align="center" bgcolor="#3399ff">标题</td>
+            <td align="center" bgcolor="#3399ff">管理</td>
+        </tr>
+        <tr style="font-size:14px;" v-for="(item, index) in listTitle" :key="index">
+            <td height="40px" align="center"><input type="checkbox" @click="selectChecked(index)" :checked="item.checked"></td>
+            <td align="center">{{item.title}}</td>
+            <td align="center" @click="delTitle(index)">删除</td>
+        </tr>
+        <tr>
+            <td colspan="3" height="40"><button type="button" @click="delALL">批量删除</button>&nbsp;&nbsp;<button type="button" @click="submitData">提交</button></td>
+        </tr>
+    </table>
+</div>
+<script src="js/vue.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                title:'',
+                listTitle:[],
+                isSelect:false
+            }
+        },
+        methods:{
+            //添加
+            addTitle(){
+                if(this.title.match(/^\s*$/)){
+                    alert('请输入内容')
+                }
+                this.listTitle.push({title:this.title,checked:false})
+                this.title=''
+            },
+            //删除
+            delTitle(index){
+                this.listTitle.splice(index,1)
+            },
+            //全选
+            allSelect(){
+                this.isSelect = !this.isSelect
+                if(this.listTitle.length>0){
+                    for(let i=0;i<this.listTitle.length;i++){
+                        this.listTitle[i].checked=this.isSelect
+                    }
+                }
+            },
+            //批量删除
+            delALL(){
+                if(this.listTitle.length>0){
+                    for(let i=0;i<this.listTitle.length;i++){
+                        if(this.listTitle[i].checked){
+                            this.listTitle.splice(i--,1)
+                        }
+                    }
+                }
+                this.selectCheckedAll()
+            },
+            //单选
+            selectChecked(index){
+                this.listTitle[index].checked = !this.listTitle[index].checked
+                //$set解决数据变化，视图不渲染的
+                //第一个参数原始数据  第二个参数索引   第三个参数新数据
+                this.$set(this.listTitle,index,this.listTitle[index])
+                this.selectCheckedAll()
+            },
+            //检测是否选中
+            selectCheckedAll(){
+                let isALL = true;
+                if(this.listTitle.length>0){
+                    for(let i=0;i<this.listTitle.length;i++){
+                        if(!this.listTitle[i].checked){
+                            isALL=false;
+                            break;
+                        }
+                    }
+                }else{
+                    isALL=false
+                }
+                this.isSelect = isALL
+            },
+            //提交
+            submitData(){
+                let data = []
+                if(this.listTitle.length>0){
+                    for(let i=0;i<this.listTitle.length;i++){
+                        if(this.listTitle[i].checked){
+                            data.push(this.listTitle[i])
+                        }
+                    }
+                }
+                alert(JSON.stringify(data))
+            }
+        }
+    })
+</script>
+</body>
+</html>
