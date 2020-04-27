@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>transition-group组动画</title>
+    <link rel="stylesheet" href="css/animate.css">
+    <style>
+        [v-cloak]{display:none}
+        .wrapper{width:600px;height:400px;position:relative;z-index:1;overflow:hidden;}
+        .wrapper .main{width:100%;height:100%;position:absolute;left:0;top:0;z-index:1;}
+        .wrapper .main .slide{width:100%;height:100%;overflow:hidden;position:absolute;left:0;top:0;z-index:1;}
+        .wrapper .main .slide img{width:100%;}
+        .pageRadio{position:absolute;left:50%;bottom:10px;transform: translateX(-50%);z-index:2;}
+        .pageRadio .radio{width:10px;height:10px;background:#000;border-radius: 10px;margin:2px;display:inline-block;}
+        .pageRadio .active{background:#ff0000;}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+
+</div>
+<script src="js/vue.js"></script>
+<script>
+    let App = {
+        template:`
+        <div>
+            <div class="wrapper">
+                <div class="main">
+                    <transition-group name="slider" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+                        <div class="slide" v-for="(item, index) in sliderList" v-show="item.isShow" :key="index"><img :src="item.img"></div>
+                    </transition-group>
+                </div>
+                <div class="pageRadio">
+                    <span :class="{radio:true, active:item.isShow}" v-for="(item, index) in sliderList" :key="index" @click="radioSlider(index)"></span>
+                </div>
+            </div>
+        </div>
+        `,
+        data(){
+            return {
+                sliderList:[
+                    {img:'./images/banner1.jpg',isShow:true},
+                    {img:'./images/banner2.jpg',isShow:false},
+                    {img:'./images/banner3.jpg',isShow:false},
+                    {img:'./images/banner4.jpg',isShow:false},
+                    {img:'./images/banner5.jpg',isShow:false}
+                ],
+                dataId:''
+            }
+        },
+        methods:{
+            radioSlider(index){
+                this.dataId=index
+                for(var i=0;i<this.sliderList.length;i++){
+                    if(this.sliderList[i].isShow){
+                        this.sliderList[i].isShow=false;
+                        break;
+                    }
+                }
+                this.sliderList[index].isShow=true
+            }
+        }
+    }
+    new Vue({
+        el:'#app',
+        template:`
+        <App></App>
+        `,
+        data(){
+            return {
+
+            }
+        },
+        components:{
+            App
+        }
+    })
+</script>
+</body>
+</html>

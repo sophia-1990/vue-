@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transition过渡动画</title>
+    <style>
+        [v-cloak]{display:none}
+        .mainBox{
+            width:100px;
+            height:100px;
+            background: #ff0000;
+            position:absolute;
+            z-index:1;
+            left:100px;
+            top:40px;
+        }
+        .fade-enter-active,.fade-leave-active{transition:left 1s;}
+        .fade-enter{left:0px;}
+        .fade-enter-to{left:100px;}
+        .fade-leave{left:100px;}
+        .fade-leave-to{left:0px;}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+
+</div>
+<script src="js/vue.js"></script>
+<script>
+    let App = {
+        template:`
+        <div>
+            <button type="button" @click="isShow=false">左移</button>
+            <button type="button" @click="isShow=true">右移</button>
+            <transition name="fade">
+                <div class="mainBox" v-show="isShow">aaaa</div>
+            </transition>
+        </div>
+        `,
+        data(){
+            return {
+                isShow:false
+            }
+        }
+    }
+    new Vue({
+        el:'#app',
+        template:`
+        <App></App>
+        `,
+        data(){
+            return {
+
+            }
+        },
+        components:{
+            App
+        }
+    })
+</script>
+</body>
+</html>

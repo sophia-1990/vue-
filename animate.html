@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>transition配合animate动画库使用</title>
+    <link rel="stylesheet" href="css/animate.css">
+    <style>
+        [v-cloak]{display:none}
+        .mainBox{
+            width:100px;
+            height:100px;
+            background: #ff0000;
+            position:absolute;
+            z-index:1;
+            left:0px;
+            top:40px;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+
+</div>
+<script src="js/vue.js"></script>
+<script>
+    let App = {
+        template:`
+        <div>
+            <button type="button" @click="isShow=!isShow">动画效果</button>
+            <transition name="fade" enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">
+                <div class="mainBox" v-show="isShow">aaaa</div>
+            </transition>
+        </div>
+        `,
+        data(){
+            return {
+                isShow:false
+            }
+        }
+    }
+    new Vue({
+        el:'#app',
+        template:`
+        <App></App>
+        `,
+        data(){
+            return {
+
+            }
+        },
+        components:{
+            App
+        }
+    })
+</script>
+</body>
+</html>
