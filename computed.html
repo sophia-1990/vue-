@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>computed计算属性</title>
+    <style>
+        ul,li{list-style:none;}
+        [v-cloak]{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <ul>
+        <li>商品：{{product}}</li>
+        <li>价格：{{money}}</li>
+        <li>数量：<button type="button" @click="--number">-</button><input type="number" v-model="number"><button type="button" @click="++number">+</button></li>
+        <li>总金额：{{total}}</li>
+    </ul>
+</div>
+<script src="js/vue.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                product:'iphone11',
+                money:8000,
+                number:1
+            }
+        },
+        computed:{
+            total(){
+                return this.number*this.money
+            }
+        }
+    })
+</script>
+</body>
+</html>
