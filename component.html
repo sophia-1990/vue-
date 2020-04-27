@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>父子组件双向绑定</title>
+    <style>
+        [v-cloak]{display:none}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak=""></div>
+<script src="js/vue.js"></script>
+<script>
+    let Inputcomponents = {
+        template:`
+        <div>
+            我是子组件<br />
+            <input type="text" v-model="currentDate">
+        </div>
+        `,
+        prop:{
+            valueDate:{
+                type:String
+            }
+        },
+        computed:{
+            currentDate:{
+                get(){
+                    return this.valueDate
+                },
+                set(val){
+                    this.$emit('input',val)
+                }
+            }
+        }
+    }
+    let homePage = {
+        template: `
+        <div>
+            我是父组件
+            <Inputcomponents v-model="valueDate"></Inputcomponents>{{valueDate}}
+        </div>
+        `,
+        data(){
+            return {
+                valueDate:''
+            }
+        },
+        components:{
+            Inputcomponents
+        }
+    }
+    //主入口
+    let App = {
+        template: `
+        <div>
+            <homePage></homePage>
+        </div>
+        `,
+        components:{
+            homePage
+        }
+    }
+    new Vue({
+        el:'#app',
+        template:`
+        <App></App>
+        `,
+        components:{
+            App
+        }
+    })
+</script>
+</body>
+</html>
