@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Directive自定义指令</title>
+    <style>
+        [v-cloak]{display:none;}
+        .box{width:100px;height:100px;background:#000;}
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<script src="js/vue.js"></script>
+<script>
+    Vue.directive('focus',{
+        inserted:(el)=>{
+            el.focus();
+        }
+    })
+    let App = {
+        directives:{
+            position:(el,binding)=>{
+                //console.info(el,binding)
+                el.style.position='absolute';
+                el.style[binding.arg]=[binding.value]+'px'
+            }
+        },
+        template:`
+        <div>
+            <input type="text" v-focus>
+            <div class="box" v-position:left="200" v-position:top="100"></div>
+        </div>
+        `
+    }
+    new Vue({
+        el:'#app',
+        template:`
+        <App></App>
+        `,
+        data(){
+            return {
+
+            }
+        },
+        components:{
+          App
+        }
+    })
+</script>
+</body>
+</html>
